@@ -1,18 +1,54 @@
 {
-  "configurations": [
-    {
-      "name": "windows-gcc-x64",
-      "includePath": [
-        "${workspaceFolder}/**"
-      ],
-      "compilerPath": "C:/Users/Diego/scoop/apps/gcc/current/bin/gcc.exe",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "windows-gcc-x64",
-      "compilerArgs": [
-        ""
-      ]
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "name": "windows-gcc-x64",
+            "includePath": [
+                "c:/Users/0dps1/OneDrive/Desktop/Coding homework/arduino/**",
+                "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/**"
+            ],
+            "compilerPath": "c:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-gcc.exe",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerArgs": [
+                ""
+            ],
+            "compilerPathInCppPropertiesJson": "C:/Users/Diego/scoop/apps/gcc/current/bin/gcc.exe",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "c:/Users/0dps1/OneDrive/Desktop/Coding homework/arduino/**",
+                    "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/**",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        },
+        {
+            "name": "Arduino",
+            "includePath": [
+                "c:/Users/0dps1/OneDrive/Desktop/Coding homework/arduino/**",
+                "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/**",
+                "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/include/**",
+                "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include/**",
+                "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/standard/**",
+                "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/hardware/samd/1.8.14/variants/mkr1000/**",
+                "C:/Users/0dps1/OneDrive/Documents/Arduino/libraries/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-gcc.exe",
+            "compilerPathInCppPropertiesJson": "C:/Users/0dps1/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-gcc.exe",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "c:/Users/0dps1/OneDrive/Desktop/Coding homework/arduino/**",
+                    "c:/Users/0dps1/OneDrive/Desktop/Coding homework/arduino"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
 }
