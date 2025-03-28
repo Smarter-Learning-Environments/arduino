@@ -1,8 +1,17 @@
 #include "module.h"
 #include <Arduino.h>
 
-Module::Module() {
+Module* Module::instance = nullptr;
+
+Module::Module() : wifiClient(), mqttClient(wifiClient) {
     this->connect();
+}
+
+Module* Module::getInstance() {
+    if(Module::instance == nullptr) {
+        Module::instance = new Module();
+    }
+    return Module::instance;
 }
 
 void Module::connect() {
@@ -32,7 +41,7 @@ void Module::connect() {
     Serial.print("Attempting to connect to the MQTT broker: ");
     Serial.println(broker);
 
-    if (!mqttClient.connect(broker, port)) {
+    if (!mqttClient.connect(this->broker.c_str(), this->port)) {
         Serial.print("MQTT connection failed! Error code = ");
         Serial.println(mqttClient.connectError());
 
@@ -51,26 +60,28 @@ void Module::connect() {
 }
 
 void Module::setID(int messageSize) {
+    Module module = *Module::instance;
+
     Serial.println("Received a message with topic '");
-    Serial.print(mqttClient.messageTopic());
+    Serial.print(module.mqttClient.messageTopic());
     Serial.print("', length ");
     Serial.print(messageSize);
     Serial.println(" bytes:");
 
     String message = "";
-    while (mqttClient.available()) {
-      message += (char)mqttClient.read();
+    while (module.mqttClient.available()) {
+      message += (char)module.mqttClient.read();
     }
   
     if(message == "Ready for module ID assignment") return;
 
-    this->mqttClient.unsubscribe("module_assignment_service/" + this->clientID);
+    module.mqttClient.unsubscribe("module_assignment_service/" + module.clientID);
 
     Serial.println("Setting ID to " + message);
 
-    this->topic += message + "/";
+    module.topic += message + "/";
 
-    this->moduleID = message.toInt();
+    module.moduleID = message.toInt();
 }
 
 void Module::registerSensor(Sensor* sensor) {

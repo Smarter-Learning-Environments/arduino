@@ -1,16 +1,16 @@
 //hello
 
-// #include "module.h"
-// #include "debugSensor.h"
+#include "module.h"
+#include "debugSensor.h"
 
-// Module module;
+Module* module;
 
-// void setup() {
-//   module = Module();
-//   DebugSensor* debugSensor = new DebugSensor();
-//   module.registerSensor(debugSensor);
-// }
+void setup() {
+  module = Module::getInstance();
+  DebugSensor* debugSensor = new DebugSensor();
+  module->registerSensor(debugSensor);
+}
 
-// void loop() {
-//   module.broadcast();
-// }
+void loop() {
+  module->broadcast();
+}
