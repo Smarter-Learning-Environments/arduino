@@ -17,8 +17,6 @@ Module* Module::getInstance() {
 void Module::connect() {
     // attempt to connect to WiFi network:
     Serial.print("Attempting to connect to WPA SSID: ");
-    String ssid = "1";
-    String pass = "1";
     Serial.println(ssid);
 
     while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
@@ -32,8 +30,10 @@ void Module::connect() {
 
     // You can provide a unique client ID, if not set the library uses Arduino-millis()
     // Each client must have a unique client ID
-    this->clientID = millis();
-    this->mqttClient.setId("Arduino_" + this->clientID);
+    if(this->moduleID == -1) {
+        this->clientID = random(__LONG_MAX__);
+        this->mqttClient.setId("Arduino_" + this->clientID);
+    }
 
     // You can provide a username and password for authentication
     // mqttClient.setUsernamePassword("username", "password");
@@ -50,13 +50,16 @@ void Module::connect() {
 
     Serial.println("You're connected to the MQTT broker!");
 
-    this->mqttClient.onMessage(Module::setID);
-    this->mqttClient.subscribe("module_assignment_service/" + this->clientID);
+    if(this->moduleID == -1) {
+        this->mqttClient.onMessage(Module::setID);
+        this->mqttClient.subscribe("module_assignment_service/" + this->clientID);
+    
+        // TODO handshake for module ID assignment
+        this->mqttClient.beginMessage("module_assignment_service/" + this->clientID);
+        this->mqttClient.print("Ready for module ID assignment");
+        this->mqttClient.endMessage();
+    }
 
-    // TODO handshake for module ID assignment
-    this->mqttClient.beginMessage("module_assignment_service/" + this->clientID);
-    this->mqttClient.print("Ready for module ID assignment");
-    this->mqttClient.endMessage();
 }
 
 void Module::setID(int messageSize) {
@@ -106,6 +109,7 @@ bool Module::broadcast() {
 
     for(int i = 0; i < this->numSensors; i++) {
         // TODO current time each
+        // TODO millis() rollover - manage here or db
         Sensor& sensor = this->sensors[i];
         int time = 2;
         this->sendMessage(sensor, sensor.takeMeasurement(), time);

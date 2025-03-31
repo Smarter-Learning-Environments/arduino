@@ -5,19 +5,22 @@
 #include <ArduinoMqttClient.h>
 #include <WiFi101.h>
 #include "sensor.h"
+#include "secrets.h"
 
 class Module{
     public:
         static Module* getInstance();
         void registerSensor(Sensor* sensor);
         bool broadcast();
+        String ssid = SECRET_SSID;
+        String pass = SECRET_PASS;
 
     private:
         Module();
         static Module* instance;
         int numSensors = 0;
-        int moduleID = -1;
-        int clientID = -1;
+        int moduleID = MODULE_UUID;
+        long clientID = -1;
         Sensor* sensors;
         WiFiClient wifiClient;
         MqttClient mqttClient;

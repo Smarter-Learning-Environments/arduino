@@ -5,9 +5,7 @@
 
 class Sensor {
     public:
-        Sensor(String sensorType) {
-            this->topic = sensorType;
-        }
+        Sensor(String sensorType) : topic(sensorType) {}
         virtual float takeMeasurement() = 0;
         String topic;
 };
