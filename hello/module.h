@@ -1,35 +1,41 @@
 #ifndef MODULE
 #define MODULE
 
-#include <Arduino.h>
-#include <ArduinoMqttClient.h>
-#include <WiFi101.h>
+#include <PubSubClient.h>
+#include <HTTPClient.h>
+#include <WiFi.h>
+#include <vector>
 #include "sensor.h"
 #include "secrets.h"
+
+#define HW_REG_TOPIC "hw_reg_service"
+#define SENSOR_PUB_TOPIC "sensor_service"
 
 class Module{
     public:
         static Module* getInstance();
-        void registerSensor(Sensor* sensor);
+        static Module* getInstance(bool deferConnection);
+        Module* registerSensor(Sensor* sensor);
+        Module* blink(int duration, int freq);
+        Module* connect();
         bool broadcast();
         String ssid = SECRET_SSID;
         String pass = SECRET_PASS;
 
     private:
         Module();
+        Module(bool deferConnection);
         static Module* instance;
-        int numSensors = 0;
-        int moduleID = MODULE_UUID;
-        long clientID = -1;
-        Sensor* sensors;
+        std::vector<Sensor*> sensors;
         WiFiClient wifiClient;
-        MqttClient mqttClient;
-        String broker = "test.mosquitto.org";
+        PubSubClient mqttClient;
+        HTTPClient http;
+        String broker = BROKER;
         int        port     = 1883;
-        String topic  = "sensor_service/";
-        void connect();
-        static void setID(int messageSize);
-        bool sendMessage(Sensor& sensor, float measurement, int time);
+        String mac = WiFi.macAddress();
+        String topic  = "sensor_service/" + mac + "/";
+        // void callback(char* topic, byte* payload, unsigned int length);
+        bool sendMessage(int sensorID, float measurement, int time);
 };
 
 #endif
